@@ -16,22 +16,14 @@ def get(x, y, m):
 def main():
     matrix = None
     with open("input", "r") as fcontent:
-        s = fcontent.read()
-        # print(s)
-        matrix = make_matrix(s)
+        matrix = make_matrix(fcontent.read())
 
-    # print(f"{len(matrix)} x {len(matrix[0])}")
-
-    num_match = 0
-
-    x = 0
-    for i in range(len(matrix)):
-        num_match += 1 if get(x, i, matrix) == "#" else 0
-        x += 3
-
+    # slopes = [(1, 3)]
     slopes = [(1, 1), (1, 3), (1, 5), (1, 7), (2, 1)]
 
+    p1 = 0
     matches = []
+
     for (dy, dx) in slopes:
         x, y = 0, 0
         num_match = 0
@@ -39,14 +31,18 @@ def main():
             num_match += 1 if get(x, y, matrix) == "#" else 0
             x += dx
             y += dy
+
+        if dy == 1 and dx == 3:
+            p1 = num_match
+
         matches.append(num_match)
 
-    p = 1
+    product = 1
     for m in matches:
-        p *= m
+        product *= m
 
-    print(f"p1: {num_match}")
-    print(f"p2: {p}")
+    print(f"p1: {p1}")
+    print(f"p2: {product}")
 
 if __name__ == "__main__":
     main()
