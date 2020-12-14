@@ -99,6 +99,8 @@ struct program *new_program(char **lines, size_t num_lines)
     for (size_t i = 0; i < num_lines; i++)
     {
         struct instruction *instruction = calloc(sizeof(struct instruction), 1);
+        if (!lines[i])
+            continue;
         if (!strncmp(lines[i], "mask", 4))
         {
             instruction->type = I_MASK;
@@ -297,8 +299,9 @@ int main(int argc, char **argv)
     char **lines = calloc(sizeof(char *), NUM_LINES);
     size_t lines_read = 0;
     size_t n = 0;
-    while (getline(lines + (lines_read++), &n, f) != -1)
+    while (getline(lines + (lines_read++), &n, f) > 0)
         ;
+    lines_read--;
 
     struct program *program = new_program(lines, lines_read);
     // print_program(program);
